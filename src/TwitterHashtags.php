@@ -66,10 +66,12 @@ class TwitterHashtags {
       $lastTweetDate = $this->getLastTweetDate($tweets);
       $maxId = $this->getMaxId($tweets);
     }
+
     return [
       'screenName' => $screenName,
       'followersCount' => $user['followersCount'],
       'tweetsCount' => $user['tweetsCount'],
+      'currentDate' => date(DATE_ATOM),
       'nbTweetsRead' => $tweetsCount,
       'oldestTweetRead' => $lastTweetDate,
       'hashtags' => $hashtags
@@ -84,7 +86,10 @@ class TwitterHashtags {
   private function getUser ($screenName) {
     $params = ['screen_name' => $screenName];
     $user = $this->connection->get('users/show', $params);
-
+    if ($this->connection->getLastHttpCode() !== 200) {
+      throw new \Exception("Error retrieving the user. Error code : " .
+      $this->connection->getLastHttpCode());
+    }
     return [
       'screenName' => $user->screen_name,
       'followersCount' => $user->followers_count,
@@ -117,7 +122,12 @@ class TwitterHashtags {
     $params = ['screen_name' => $screenName, 'trim_user' => 1];
     if ($count) $params['count'] = $count;
     if ($maxId) $params['max_id'] = $maxId;
-    return $this->connection->get('statuses/user_timeline', $params);
+    $tweets = $this->connection->get('statuses/user_timeline', $params);
+    if ($this->connection->getLastHttpCode() !== 200) {
+      throw new \Exception("Error retrieving the user. Error code : " .
+      $this->connection->getLastHttpCode());
+    }
+    return $tweets;
   }
 
   /**
