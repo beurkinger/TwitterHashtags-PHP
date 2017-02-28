@@ -1,15 +1,20 @@
 <?php
+/**
+ * A PHP tool based on TwitterOAuth to retrieve, filter and count
+ * the hashtags used by a Twitter user.
+ *
+ * @license MIT
+ */
 namespace Beurkinger\TwitterHashtags;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
-/**
- * Description of Twitter
- *
- * @author Thibault Goehringer
- */
-
-class Twitter {
+ /**
+  * The TwitterHashtags class, where the magic happens.s
+  *
+  * @author Thibault Goehringer <tgoehringer@gmail.com>
+  */
+class TwitterHashtags {
   private $connection = null;
   private $is64bits = false;
 
