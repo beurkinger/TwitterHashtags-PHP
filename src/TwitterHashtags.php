@@ -10,7 +10,7 @@ namespace Beurkinger\TwitterHashtags;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
  /**
-  * The TwitterHashtags class, where the magic happens.s
+  * The TwitterHashtags class, where the magic happens.
   *
   * @author Thibault Goehringer <tgoehringer@gmail.com>
   */
@@ -195,5 +195,5 @@ class TwitterHashtags {
       '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
     ];
     return preg_replace(array_keys($utf8), array_values($utf8), $text);
-}
+  }
 }
