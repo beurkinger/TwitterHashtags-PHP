@@ -1,6 +1,6 @@
 <?php
 /**
- * A PHP tool based on TwitterOAuth to retrieve, filter and count
+ * A PHP tool based on TwitterOAuth used to retrieve, filter and count
  * the hashtags used by a Twitter user.
  *
  * @license MIT
@@ -69,8 +69,8 @@ class TwitterHashtags {
 
     return [
       'screenName' => $screenName,
-      'followersCount' => $user['followersCount'],
-      'tweetsCount' => $user['tweetsCount'],
+      'followersCount' => $user->followers_count,
+      'tweetsCount' => $user->statuses_count,
       'currentDate' => date(DATE_ATOM),
       'nbTweetsRead' => $tweetsCount,
       'oldestTweetRead' => $lastTweetDate,
@@ -79,22 +79,18 @@ class TwitterHashtags {
   }
 
   /**
-   * Return a user basic infos
+   * Return a user's infos
    *
    * @param string  $screenName   The user's screen name, without @
    */
-  private function getUser ($screenName) {
+  function getUser ($screenName) {
     $params = ['screen_name' => $screenName];
     $user = $this->connection->get('users/show', $params);
     if ($this->connection->getLastHttpCode() !== 200) {
       throw new \Exception("Error retrieving the user. Error code : " .
       $this->connection->getLastHttpCode());
     }
-    return [
-      'screenName' => $user->screen_name,
-      'followersCount' => $user->followers_count,
-      'tweetsCount' => $user->statuses_count
-    ];
+    return $user
   }
 
   /**
@@ -151,7 +147,7 @@ class TwitterHashtags {
   }
 
   /**
-   * Get the new madIx
+   * Return the new madIx
    * @param array   $tweets   An array of tweets
    */
   private function getMaxId ($tweets) {
@@ -161,7 +157,7 @@ class TwitterHashtags {
   }
 
   /**
-   * Get the last tweet date
+   * Return the last tweet's date
    * @param array   $tweets   An array of tweets
    */
   private function getLastTweetDate ($tweets) {
@@ -169,7 +165,7 @@ class TwitterHashtags {
   }
 
   /**
-   * Remove special characters from a string
+   * Remove the accents from a string and put in in lowercase
    * @param string  $text A string
    */
   private function cleanString($text) {
